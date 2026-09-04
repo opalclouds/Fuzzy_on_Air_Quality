@@ -62,7 +62,8 @@ The system generates three primary diagnostic figures during evaluation:
 ### 1. Variable Membership Function Distribution
 Shows the overlapping fuzzy partitions across input variables ($\text{PM}_{2.5}$, $\text{NO}_2$, $\text{O}_3$) and the output set ($H$).
 
-![Fuzzy Membership Functions](membership_functions.png)
+![Fuzzy Membership Functions](<img width="1189" height="490" alt="image" src="https://github.com/user-attachments/assets/c28e2a50-c5aa-489c-b031-a3fbcbd3c2ff" />
+)
 
 ### 2. Temporal Hazard Score Tracking
 Tracking the continuous Fuzzy Health Hazard Score against raw $\text{PM}_{2.5}$ fluctuations across historical city sensor logs.
