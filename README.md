@@ -1,3 +1,4 @@
+
 # 🌫️ Multi-Pollutant Fuzzy Air Quality Risk Evaluator
 
 A non-linear **Fuzzy Inference System (FIS)** built with Python and `scikit-fuzzy` that evaluates multi-pollutant health risks from real-world environmental sensor logs. 
@@ -58,13 +59,20 @@ $$z^* = \frac{\int y \cdot \mu_H(y) \, dy}{\int \mu_H(y) \, dy}$$
 ## 📊 Visualizations & Model Evaluation
 
 ### 1. 3D Fuzzy Logic Control Surface
-![3D Fuzzy Logic Control Surface](./3d_model.png)
+![3D Fuzzy Logic Control Surface](<img width="590" height="506" alt="3d_model" src="https://github.com/user-attachments/assets/c7e8d5ca-e7da-4ed6-b144-96882a174c56" />
+)
 
 ### 2. Temporal Hazard Tracking vs. PM2.5
-![Fuzzy Hazard Score vs PM2.5](./membership_functions.png)
+![Fuzzy Hazard Score vs PM2.5]()<img width="1189" height="490" alt="hazard" src="https://github.com/user-attachments/assets/5d5c2753-3589-4a4a-900a-1a5afa1d8482" />
+<img width="590" height="506" alt="3d_model" src="https://github.com/user-attachments/assets/43969d72-1c23-475d-886f-8b4dbd92ebe5" />
+<img width="1189" height="490" alt="membership_functions" src="https://github.com/user-attachments/assets/fdddcd05-ab2e-4158-9abf-6702dc377053" />
+
 
 ### 3. Comparison: Official Kaggle AQI vs. Fuzzy Hazard Model
-![Official AQI vs Fuzzy Model](./hazard.png)
+![Official AQI vs Fuzzy Model](<img width="590" height="506" alt="3d_model" src="https://github.com/user-attachments/assets/72b2a199-d56e-47f7-97fb-91401c33b4dc" />
+<img width="1189" height="490" alt="membership_functions" src="https://github.com/user-attachments/assets/dd6375d2-0901-41fa-901c-d44dd6915ca5" />
+<img width="1189" height="490" alt="hazard" src="https://github.com/user-attachments/assets/65500f77-54fb-42dd-b4ed-1a31ba3f2fa7" />
+)
 
 ```bash
 # 1. Install dependencies
