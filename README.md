@@ -1,28 +1,19 @@
-
 # 🌫️ Multi-Pollutant Fuzzy Air Quality Risk Evaluator
 
-A non-linear **Fuzzy Inference System (FIS)** built with Python and `scikit-fuzzy` that evaluates multi-pollutant health risks from real-world environmental sensor logs. 
+A non-linear **Fuzzy Inference System (FIS)** built with Python and `scikit-fuzzy` that evaluates multi-pollutant health hazards from real-world city sensor logs.
 
-Standard AQI formulas isolate the single worst pollutant while ignoring compound toxicities. This model applies **Mamdani Fuzzy Inference** to evaluate simultaneous exposures of $\text{PM}_{2.5}$, $\text{NO}_2$, and $\text{O}_3$ and derive a unified **Health Hazard Score $[0, 100]$**.
-
----
-
-## 📌 Key System Features
-- **Compound Exposure Modeling:** Captures additive health risks when multiple pollutants exist at moderate levels.
-- **Smooth Membership Transitions:** Replaces rigid step-function thresholds with continuous trapezoidal and triangular fuzzy sets.
-- **Automated Data Pipeline:** Integrates directly with real-world sensor logs (e.g., Kaggle Indian City Air Quality Dataset) using Pandas.
-- **Centroid Defuzzification:** Maps overlapping rule evaluations into a single continuous crisp metric.
+Traditional AQI models isolate the single worst pollutant while ignoring compound toxicities. This model uses **Mamdani Fuzzy Inference** to evaluate concurrent exposures of $\text{PM}_{2.5}$, $\text{NO}_2$, and $\text{O}_3$ and derive a continuous **Health Hazard Score $[0, 100]$**.
 
 ---
 
-## 📐 System Architecture & Mathematical Foundations
+## 📐 Mathematical Framework
 
-### 1. Membership Functions (Fuzzification)
-Input variables are fuzzified across specified Universes of Discourse:
-
-$$\text{PM}_{2.5} \in [0, 500] \, \mu g/m^3 \quad \vert{} \quad \text{NO}_2 \in [0, 401] \, \mu g/m^3 \quad \vert{} \quad \text{O}_3 \in [0, 401] \, \mu g/m^3$$
-
-$$\text{Health Hazard Score} \, (H) \in [0, 100]$$
+### 1. Variables & Membership Functions
+Input variables are fuzzified across standard operational ranges:
+* $\text{PM}_{2.5} \in [0, 500] \, \mu g/m^3$
+* $\text{NO}_2 \in [0, 401] \, \mu g/m^3$
+* $\text{O}_3 \in [0, 401] \, \mu g/m^3$
+* $\text{Health Hazard Score } (H) \in [0, 100]$
 
 #### Membership Operators
 * **Trapezoidal Set:**
@@ -32,25 +23,17 @@ $$\text{Health Hazard Score} \, (H) \in [0, 100]$$
 
 ---
 
-### 2. Fuzzy Rule Engine
-Rule evaluation utilizes Mamdani Minimum ($t$-norm) for conjunctions (AND) and Maximum ($s$-norm) for disjunctions (OR):
+### 2. Fuzzy Rule Engine & Defuzzification
+Mamdani evaluation uses Minimum ($t$-norm) for conjunctions ($\mathbf{\wedge}$) and Maximum ($s$-norm) for disjunctions ($\mathbf{\vee}$):
 
 $$\mu_{A \cap B}(x) = \min(\mu_A(x), \mu_B(x)) \qquad \mu_{A \cup B}(x) = \max(\mu_A(x), \mu_B(x))$$
 
-**Mamdani Rule Base:**
-1. **Rule 1 (Safe Baseline):**  
-   $$\text{IF } \text{PM}_{2.5} \text{ is Good } \mathbf{\wedge} \, \text{NO}_2 \text{ is Low } \mathbf{\wedge} \, \text{O}_3 \text{ is Low} \implies H \text{ is Safe}$$
-2. **Rule 2 (Moderate Hazard):**  
-   $$\text{IF } \text{PM}_{2.5} \text{ is Moderate } \mathbf{\vee} \, \text{NO}_2 \text{ is Moderate } \mathbf{\vee} \, \text{O}_3 \text{ is Moderate} \implies H \text{ is Moderate}$$
-3. **Rule 3 (Compound High Risk):**  
-   $$\text{IF } \text{PM}_{2.5} \text{ is Moderate } \mathbf{\wedge} \, (\text{NO}_2 \text{ is High } \mathbf{\vee} \, \text{O}_3 \text{ is High}) \implies H \text{ is High}$$
-4. **Rule 4 (Critical Emergency):**  
-   $$\text{IF } \text{PM}_{2.5} \text{ is Unhealthy } \mathbf{\vee} \, \text{NO}_2 \text{ is High } \mathbf{\vee} \, \text{O}_3 \text{ is High} \implies H \text{ is Critical}$$
+* **Rule 1 (Safe):** $\text{IF } \text{PM}_{2.5} \text{ is Good } \mathbf{\wedge} \, \text{NO}_2 \text{ is Low } \mathbf{\wedge} \, \text{O}_3 \text{ is Low} \implies H \text{ is Safe}$
+* **Rule 2 (Moderate):** $\text{IF } \text{PM}_{2.5} \text{ is Moderate } \mathbf{\vee} \, \text{NO}_2 \text{ is Moderate } \mathbf{\vee} \, \text{O}_3 \text{ is Moderate} \implies H \text{ is Moderate}$
+* **Rule 3 (High):** $\text{IF } \text{PM}_{2.5} \text{ is Moderate } \mathbf{\wedge} \, (\text{NO}_2 \text{ is High } \mathbf{\vee} \, \text{O}_3 \text{ is High}) \implies H \text{ is High}$
+* **Rule 4 (Critical):** $\text{IF } \text{PM}_{2.5} \text{ is Unhealthy } \mathbf{\vee} \, \text{NO}_2 \text{ is High } \mathbf{\vee} \, \text{O}_3 \text{ is High} \implies H \text{ is Critical}$
 
----
-
-### 3. Defuzzification
-The aggregated fuzzy output set $\mu_H(y)$ is converted into a crisp hazard index $z^*$ using **Center of Gravity (Centroid)** defuzzification:
+The aggregated output set $\mu_H(y)$ is converted to a crisp value using **Centroid Defuzzification**:
 
 $$z^* = \frac{\int y \cdot \mu_H(y) \, dy}{\int \mu_H(y) \, dy}$$
 
@@ -59,24 +42,36 @@ $$z^* = \frac{\int y \cdot \mu_H(y) \, dy}{\int \mu_H(y) \, dy}$$
 ## 📊 Visualizations & Model Evaluation
 
 ### 1. 3D Fuzzy Logic Control Surface
-![3D Fuzzy Logic Control Surface](<img width="590" height="506" alt="3d_model" src="https://github.com/user-attachments/assets/c7e8d5ca-e7da-4ed6-b144-96882a174c56" />
-)
+Visualizes the non-linear decision surface generated by the Mamdani rules, showing how continuous variations in $\text{PM}_{2.5}$ and $\text{NO}_2$ map directly to the **Fuzzy Hazard Score**.
+
+![3D Fuzzy Logic Control Surface](./3d_model.png)
 
 ### 2. Temporal Hazard Tracking vs. PM2.5
-![Fuzzy Hazard Score vs PM2.5]()<img width="1189" height="490" alt="hazard" src="https://github.com/user-attachments/assets/5d5c2753-3589-4a4a-900a-1a5afa1d8482" />
-<img width="590" height="506" alt="3d_model" src="https://github.com/user-attachments/assets/43969d72-1c23-475d-886f-8b4dbd92ebe5" />
-<img width="1189" height="490" alt="membership_functions" src="https://github.com/user-attachments/assets/fdddcd05-ab2e-4158-9abf-6702dc377053" />
+Tracks the calculated **Fuzzy Health Hazard Score $[0, 100]$** alongside raw $\text{PM}_{2.5}$ concentrations across historical city sensor readings.
 
+![Fuzzy Hazard Score vs PM2.5](./membership_functions.png)
 
-### 3. Comparison: Official Kaggle AQI vs. Fuzzy Hazard Model
-![Official AQI vs Fuzzy Model](<img width="590" height="506" alt="3d_model" src="https://github.com/user-attachments/assets/72b2a199-d56e-47f7-97fb-91401c33b4dc" />
-<img width="1189" height="490" alt="membership_functions" src="https://github.com/user-attachments/assets/dd6375d2-0901-41fa-901c-d44dd6915ca5" />
-<img width="1189" height="490" alt="hazard" src="https://github.com/user-attachments/assets/65500f77-54fb-42dd-b4ed-1a31ba3f2fa7" />
-)
+### 3. Official AQI vs. Fuzzy Hazard Model
+Benchmarks our scaled Fuzzy Hazard Score against the official step-function Kaggle AQI metric to demonstrate smoother continuous risk transitions.
 
-```bash
-# 1. Install dependencies
-pip install scikit-fuzzy pandas numpy matplotlib
+![Official AQI vs Fuzzy Model](./hazard.png)
 
-# 2. Run execution pipeline
-python main.py
+---
+
+## 🛠️ Usage
+
+```python
+import pandas as pd
+import skfuzzy as fuzz
+from skfuzzy import control as ctrl
+
+# Clean Dataset
+clean_df = pd.read_csv('city_day.csv').dropna(subset=['PM2.5', 'NO2', 'O3'])
+
+# Evaluate Sample Row
+hazard_sim.input['PM25'] = clean_df.iloc[0]['PM2.5']
+hazard_sim.input['NO2']  = clean_df.iloc[0]['NO2']
+hazard_sim.input['O3']   = clean_df.iloc[0]['O3']
+hazard_sim.compute()
+
+print(f"Calculated Fuzzy Hazard Score: {hazard_sim.output['Hazard']:.2f} / 100")
