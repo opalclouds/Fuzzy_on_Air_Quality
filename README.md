@@ -58,14 +58,13 @@ $$z^* = \frac{\int y \cdot \mu_H(y) \, dy}{\int \mu_H(y) \, dy}$$
 ## 📊 Visualizations & Model Evaluation
 
 ### 1. 3D Fuzzy Logic Control Surface
-![3D Fuzzy Logic Control Surface](./assets/3d_model.png)
+![3D Fuzzy Logic Control Surface](./3d_model.png)
 
 ### 2. Temporal Hazard Tracking vs. PM2.5
-![Fuzzy Hazard Score vs PM2.5](./assets/membership_functions.png)
+![Fuzzy Hazard Score vs PM2.5](./membership_functions.png)
 
 ### 3. Comparison: Official Kaggle AQI vs. Fuzzy Hazard Model
-![Official AQI vs Fuzzy Model](./assets/hazard.png)
-## 🛠️ Installation & Execution
+![Official AQI vs Fuzzy Model](./hazard.png)
 
 ```bash
 # 1. Install dependencies
